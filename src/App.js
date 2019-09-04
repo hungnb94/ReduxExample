@@ -7,13 +7,17 @@
  */
 
 import React from 'react';
-import {createStore} from 'redux';
+import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
 
 import reducers from './reducers';
 import CounterContainer from './containers/CounterContainer';
+import createSagaMiddleware from 'redux-saga';
+import rootSaga from './sagas/rootSaga';
 
-let store = createStore(reducers);
+const sagaMiddleware = createSagaMiddleware();
+
+let store = createStore(reducers, applyMiddleware(sagaMiddleware));
 
 const App = () => {
   return (
@@ -24,3 +28,5 @@ const App = () => {
 };
 
 export default App;
+
+sagaMiddleware.run(rootSaga);
